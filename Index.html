@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Herd Welfare Briefing</title>
+    <!-- Importing Icons (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Importing Fonts: DM Serif Display (Editorial) & Inter (Tech) -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Editorial / Invisible Tech Palette */
+            --bg-body: #F2F2F0; /* Warm paper-like grey */
+            --bg-card: #FFFFFF;
+            --text-main: #1A1A1A; /* Stark black/charcoal */
+            --text-muted: #555555;
+            --border-color: #1A1A1A; /* High contrast borders */
+            
+            /* Muted Earth Tones */
+            --green: #2D4F1E;
+            --green-bg: #E3E8E1;
+            --orange: #8C4B18;
+            --orange-bg: #F0E6DD;
+            --purple: #4A3B58;
+            --purple-bg: #EAE6EE;
+            --teal: #1F4D52;
+            --teal-bg: #DDE8E9;
+            --blue: #1A1A1A; /* Using black for primary actions for that stark look */
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 60px 40px;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px; /* Wider gaps for editorial feel */
+            border-top: 1px solid var(--border-color); /* Top framing line */
+        }
+
+        /* --- Header --- */
+        header {
+            grid-column: 1 / -1;
+            margin-bottom: 40px;
+            padding-top: 40px; /* Spacing from top border */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-content h1 {
+            color: var(--text-main);
+            margin: 0;
+            font-family: 'DM Serif Display', serif; /* Signature Serif Font */
+            font-size: 3.5rem; /* Large, bold typography */
+            line-height: 0.95;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .header-content h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-main);
+            margin-top: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            border-left: 1px solid var(--text-main);
+            padding-left: 12px;
+            margin-left: 4px;
+        }
+
+        .date-badge {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            background: transparent;
+            /* Sharp corners */
+            border-radius: 0; 
+        }
+
+        /* --- Components --- */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color); /* Visible borders */
+            border-radius: 0px; /* Sharp corners */
+            padding: 32px;
+            box-shadow: none; /* No drop shadows */
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        /* Hover effect: Subtle lift via border or translation, staying sharp */
+        .card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: var(--text-main);
+            letter-spacing: 0.15em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        /* Summary Section */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0; /* Remove gap, use borders */
+            border: 1px solid var(--border-color);
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            background: #fff;
+            height: 100%;
+        }
+
+        /* Vertical divider between summary items */
+        .status-item:first-child {
+            border-right: 1px solid var(--border-color);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .icon-box {
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .status-content strong { 
+            display: block; 
+            font-size: 0.7rem; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .status-content .main-stat { 
+            font-family: 'DM Serif Display', serif;
+            font-weight: 400; 
+            font-size: 1.75rem; 
+            color: var(--text-main); 
+            display: block; 
+            margin-bottom: 8px; 
+            line-height: 1.1;
+        }
+        
+        .status-content p { 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+            margin: 0; 
+            line-height: 1.5; 
+            max-width: 90%;
+        }
+
+        /* Checklist Cards */
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .alert-card {
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+            background: white;
+            transition: all 0.2s;
+        }
+        
+        .alert-card:hover {
+            background: var(--text-main);
+        }
+        
+        /* Invert colors on hover for dramatic effect */
+        .alert-card:hover strong, 
+        .alert-card:hover p, 
+        .alert-card:hover .card-number,
+        .alert-card:hover .card-icon {
+            color: white;
+            border-color: white;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .card-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--text-main);
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Colored top borders for identification */
+        .bg-orange { border-top: 4px solid var(--orange); }
+        .bg-purple { border-top: 4px solid var(--purple); }
+        .bg-teal { border-top: 4px solid var(--teal); }
+
+        .alert-card strong { 
+            font-size: 1.1rem; 
+            line-height: 1.2; 
+            margin-bottom: 12px; 
+            display: block; 
+            font-weight: 600;
+            font-family: 'DM Serif Display', serif;
+            letter-spacing: 0.02em;
+        }
+        
+        .alert-card p { font-size: 0.85rem; margin: 0; line-height: 1.6; color: var(--text-muted); }
+
+        /* System Health List */
+        .health-list li {
+            list-style: none;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        
+        .dot { 
+            width: 6px; 
+            height: 6px; 
+            background: var(--text-main); /* Black dots */
+            border-radius: 0; /* Square dots */
+            transform: translateY(-2px);
+        }
+
+        /* Timeline / Key Areas */
+        .timeline-box {
+            background: var(--text-main);
+            color: white;
+            padding: 24px;
+            margin-bottom: 0;
+            border: 1px solid var(--text-main);
+        }
+        
+        .timeline-box strong { color: white; font-family: 'DM Serif Display', serif; font-size: 1.2rem; letter-spacing: 0.03em;}
+        .timeline-box p { color: rgba(255,255,255,0.7); }
+
+        .area-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            border-top: none; /* Collapse borders */
+            background: white;
+        }
+
+        /* Review Table */
+        .review-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .review-table th, .review-table td {
+            padding: 20px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .review-table tr:last-child td { border-bottom: none; }
+        
+        .review-table tr:hover td {
+            background-color: #f7f7f7;
+        }
+
+        .play-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .play-btn:hover { background: var(--text-main); color: white; }
+
+        /* Edit Mode Hint */
+        .edit-hint {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--text-main);
+            color: white;
+            padding: 12px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            z-index: 100;
+            border-radius: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 1fr; }
+            .checklist-grid { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 20px; }
+            .header-content h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-content">
+                <h1 contenteditable="true">Daily Herd Welfare.</h1>
+                <h2 contenteditable="true">Briefing / Today's Summary</h2>
+            </div>
+            <div class="date-badge" contenteditable="true">
+                OCT 24, 2025
+            </div>
+        </header>
+
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
+            
+            <!-- Summary Section -->
+            <div class="card" style="padding:0; border:none; background:transparent;">
+                <div class="summary-grid">
+                    <div class="status-item">
+                        <div class="status-header">
+                            <div class="icon-box"><i class="fa-solid fa-cow"></i></div>
+                            <strong style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em;">Status</strong>
+                        </div>
+                        <div class="status-content">
+                            <span contenteditable="true" class="main-stat">Normal Ops</span>
+                            <p contenteditable="true">No major welfare emergencies detected. Two items require follow-up.</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-header">
+                            <div class="icon-box"><i class="fa-regular fa-clock"></i></div>
+                            <strong style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em;">Peak Time</strong>
+                        </div>
+                        <div class="status-content">
+                            <span contenteditable="true" class="main-stat">05:00 - 05:30</span>
+                            <p contenteditable="true">High animal movement and human-cow interactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Checklist -->
+            <div class="section-title">Morning Checklist / Actions</div>
+            <div class="checklist-grid">
+                <!-- Card 1 -->
+                <div class="alert-card bg-orange">
+                    <div class="card-header">
+                        <span class="card-number">01</span>
+                        <div class="card-icon"><i class="fa-solid fa-warehouse"></i></div>
+                    </div>
+                    <div>
+                        <strong contenteditable="true">Check Barn 4</strong>
+                        <p contenteditable="true">System flagged "down cow" at 4:12 AM. Verify she is up and moving normally.</p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="alert-card bg-purple">
+                    <div class="card-header">
+                        <span class="card-number">02</span>
+                        <div class="card-icon"><i class="fa-solid fa-play-circle"></i></div>
+                    </div>
+                    <div>
+                        <strong contenteditable="true">Review Clip Pen 7</strong>
+                        <p contenteditable="true">Review recommended to ensure specific interaction was safe and controlled.</p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="alert-card bg-teal">
+                    <div class="card-header">
+                        <span class="card-number">03</span>
+                        <div class="card-icon"><i class="fa-solid fa-question-circle"></i></div>
+                    </div>
+                    <div>
+                        <strong contenteditable="true">Confirm Move</strong>
+                        <p contenteditable="true">Barn 2: Unclear if event was routine husbandry. Quick confirmation needed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="card">
+                <div class="section-title" style="margin-top:0; border:none;">System Health & Recommendations</div>
+                <div style="display:flex; gap:60px; flex-wrap: wrap; margin-top:20px;">
+                    <div style="flex:1; min-width: 250px;">
+                        <strong style="font-family:'DM Serif Display'; font-size:1.1rem; display:block; margin-bottom:16px;">Cameras Requiring Adjustment</strong>
+                        <ul class="health-list" style="padding-left:0; margin:0;">
+                            <li><span class="dot"></span> <span contenteditable="true">Barn 11 (Sun Glare)</span></li>
+                            <li><span class="dot"></span> <span contenteditable="true">Barn 22 (Obstruction/Dust)</span></li>
+                            <li><span class="dot"></span> <span contenteditable="true">Parlor Entrance (Lighting)</span></li>
+                        </ul>
+                    </div>
+                    <div style="flex:1; min-width: 250px;">
+                        <strong style="font-family:'DM Serif Display'; font-size:1.1rem; display:block; margin-bottom:16px;">Improve Pen Lighting</strong>
+                        <div style="display:flex; gap:16px; align-items:flex-start;">
+                            <i class="fa-regular fa-lightbulb" style="color:var(--text-main); font-size:1.2rem; margin-top:4px;"></i>
+                            <p contenteditable="true" style="font-size:0.95rem; color:var(--text-muted); margin:0; line-height:1.6;">Consider adding more lighting in shaded pens to improve visibility for monitoring.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-col">
+            
+            <div class="section-title">Focus Areas</div>
+            
+            <div style="display:flex; flex-direction:column;">
+                <div class="timeline-box">
+                    <strong>Peak Activity: 5:00 AM - 5:30 AM</strong>
+                    <p contenteditable="true" style="margin:8px 0 0 0; font-size:0.9rem;">Highest risk period with most cow movement and chores.</p>
+                </div>
+
+                <div class="area-item">
+                    <div class="card-icon" style="border:none; background:#EAE6EE; width:40px; height:40px; padding:10px;">
+                        <i class="fa-solid fa-users" style="color:var(--text-main);"></i>
+                    </div>
+                    <div>
+                        <strong contenteditable="true" style="font-family:'DM Serif Display'; font-size:1.1rem;">Crowding in Barn 9</strong>
+                        <p contenteditable="true" style="margin:4px 0 0 0; font-size:0.9rem; color:var(--text-muted);">Slightly higher activity causing short-term crowding.</p>
+                    </div>
+                </div>
+
+                <div class="area-item">
+                    <div class="card-icon" style="border:none; background:#E3E8E1; width:40px; height:40px; padding:10px;">
+                        <i class="fa-solid fa-truck" style="color:var(--text-main);"></i>
+                    </div>
+                    <div>
+                        <strong contenteditable="true" style="font-family:'DM Serif Display'; font-size:1.1rem;">Trailer Movement</strong>
+                        <p contenteditable="true" style="margin:4px 0 0 0; font-size:0.9rem; color:var(--text-muted);">05:45 AM. Check that this group movement matches your schedule.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top:40px;">Clip Review Priority</div>
+            <div class="card" style="padding:0;">
+                <table class="review-table">
+                    <tbody id="clipTable">
+                        <tr>
+                            <td style="width:50px; text-align:center; font-family:'DM Serif Display'; font-size:1.1rem;">01</td>
+                            <td style="width:60px;"><button class="play-btn"><i class="fa-solid fa-play" style="font-size:0.7rem;"></i></button></td>
+                            <td contenteditable="true">
+                                <span style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Barn 4</span><br>
+                                <span style="font-size:0.85rem; color:var(--text-muted);">Possible down cow flag</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:50px; text-align:center; font-family:'DM Serif Display'; font-size:1.1rem;">02</td>
+                            <td style="width:60px;"><button class="play-btn"><i class="fa-solid fa-play" style="font-size:0.7rem;"></i></button></td>
+                            <td contenteditable="true">
+                                <span style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Pen 7</span><br>
+                                <span style="font-size:0.85rem; color:var(--text-muted);">Higher-intensity handling event</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:50px; text-align:center; font-family:'DM Serif Display'; font-size:1.1rem;">03</td>
+                            <td style="width:60px;"><button class="play-btn"><i class="fa-solid fa-play" style="font-size:0.7rem;"></i></button></td>
+                            <td contenteditable="true">
+                                <span style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Trailer</span><br>
+                                <span style="font-size:0.85rem; color:var(--text-muted);">Movement at 5:45 AM</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:50px; text-align:center; font-family:'DM Serif Display'; font-size:1.1rem;">04</td>
+                            <td style="width:60px;"><button class="play-btn"><i class="fa-solid fa-play" style="font-size:0.7rem;"></i></button></td>
+                            <td contenteditable="true">
+                                <span style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Barn 9</span><br>
+                                <span style="font-size:0.85rem; color:var(--text-muted);">Example of crowding</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:50px; text-align:center; font-family:'DM Serif Display'; font-size:1.1rem;">05</td>
+                            <td style="width:60px;"><button class="play-btn"><i class="fa-solid fa-play" style="font-size:0.7rem;"></i></button></td>
+                            <td contenteditable="true">
+                                <span style="font-weight:600; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.05em;">Barn 2</span><br>
+                                <span style="font-size:0.85rem; color:var(--text-muted);">Unclear calf-handling event</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="edit-hint">
+        Click text to edit
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.play-btn');
+        buttons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                console.log(`Playing Clip #${index + 1}`);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
